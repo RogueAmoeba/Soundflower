@@ -43,13 +43,14 @@ configuration = "Deployment" if configuration == "dep"
 puts "  Building the new Soundflower.kext with Xcode"
 
 Dir.chdir("#{@source}")
-Open3.popen3("xcodebuild -project Soundflower.xcodeproj -target Soundflower -configuration #{configuration} clean build") do |stdin, stdout, stderr|
+Open3.popen3("sudo xcodebuild -project Soundflower.xcodeproj -target Soundflower -configuration #{configuration} clean build") do |stdin, stdout, stderr|
   out = stdout.read
   err = stderr.read
 end
 
-`sudo chown -R root #{@svn_root}/Build/InstallerRoot/System/Library/Extensions/Soundflower.kext`
-`sudo chgrp -R wheel #{@svn_root}/Build/InstallerRoot/System/Library/Extensions/Soundflower.kext`
+`sudo chown -R root  #{@svn_root}/Build/InstallerRoot/Library/Extensions/Soundflower.kext`
+`sudo chgrp -R wheel #{@svn_root}/Build/InstallerRoot/Library/Extensions/Soundflower.kext`
+`sudo chmod -R 755   #{@svn_root}/Build/InstallerRoot/Library/Extensions/Soundflower.kext`
 
 #if /BUILD SUCCEEDED/.match(out)
 #  puts "    BUILD SUCCEEDED"
@@ -64,7 +65,7 @@ end
 puts "  Building the new Soundflowerbed.app with Xcode"
 
 Dir.chdir("#{@source_sfb}")
-Open3.popen3("xcodebuild -project Soundflowerbed.xcodeproj -target Soundflowerbed -configuration #{configuration} clean build") do |stdin, stdout, stderr|
+Open3.popen3("sudo xcodebuild -project Soundflowerbed.xcodeproj -target Soundflowerbed -configuration #{configuration} clean build") do |stdin, stdout, stderr|
   out = stdout.read
   err = stderr.read
 end

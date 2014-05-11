@@ -1,5 +1,8 @@
 #!/bin/bash
 
 echo "touch the extensions directory"
+chown -R root  /System/Library/Extensions/Soundflower.kext
+chgrp -R wheel /System/Library/Extensions/Soundflower.kext
+chmod -R 755   /System/Library/Extensions/Soundflower.kext
 touch /System/Library/Extensions
 kextload /System/Library/Extensions/Soundflower.kext

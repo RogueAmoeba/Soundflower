@@ -29,7 +29,7 @@ if File.exists?("/System/Library/Extensions/Soundflower.kext")
 end
 
 puts "  Copying to /System/Library/Extensions and loading kext"
-`sudo cp -rv "#{@svn_root}/Build/Soundflower.kext" /System/Library/Extensions`
+`sudo cp -rv "#{@svn_root}/Build/InstallerRoot/Library/Extensions/Soundflower.kext" /System/Library/Extensions`
 `sudo kextload -tv /System/Library/Extensions/Soundflower.kext`
 `sudo touch /System/Library/Extensions`
 
