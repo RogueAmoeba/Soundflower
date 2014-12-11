@@ -1122,7 +1122,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	if (num) {
 		UInt32 val;
 		CFNumberGetValue(num, kCFNumberLongType, &val);	
-		CFRelease(num);
 		
 		switch (val) {
 			case 64:
@@ -1152,7 +1151,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	if (num) {
 		UInt32 val;
 		CFNumberGetValue(num, kCFNumberLongType, &val);	
-		CFRelease(num);
 		
 		switch (val) {
 			case 64:
@@ -1177,8 +1175,12 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 				break;
 		}
 	}
+
+    if (num) {
+        CFRelease(num);
+    }
 }
-		
+
 - (void)writeGlobalPrefs
 {
 	CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorSystemDefault, [[mCur2chDevice title] cString], kCFStringEncodingMacRoman);
