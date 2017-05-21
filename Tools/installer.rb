@@ -74,9 +74,9 @@ end
 def getversion()
   theVersion = "0.0.0"
 
-  f = File.open("#{@installer_root}/System/Library/Extensions/Soundflower.kext/Contents/Info.plist", "r")
+  f = File.open("#{@installer_root}/Applications/Soundflower/Soundflowerbed.app/Contents/Info.plist", "r")
   str = f.read
-  theVersion = str.match(/<key>CFBundleShortVersionString<\/key>\n.*<string>(.*)<\/string>/).captures[0]
+  theVersion = str.match(/<key>CFBundleVersion<\/key>\n.*<string>(.*)<\/string>/).captures[0]
   f.close
   
   puts"  version: #{theVersion}"
@@ -94,26 +94,25 @@ create_logs()
 @build_folder = "#{@svn_root}/Build/Soundflower-#{@version}"
 
 puts "  Creating installer directory structure..."
-cmd("sudo rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
-cmd("sudo mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
+cmd("rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
+cmd("mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
 
-cmd("sudo cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\"           \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/License.txt\"                                \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/Installer/ReadMe.rtf\"                       \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/SoundflowerBed/Soundflowerbed README.rtf\"   \"#{@installer_root}\"/Applications/Soundflower")
+cmd("cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\"           \"#{@installer_root}\"/Applications/Soundflower")
+cmd("cp \"#{@svn_root}/License.txt\"                                \"#{@installer_root}\"/Applications/Soundflower")
+cmd("cp \"#{@svn_root}/Installer/ReadMe.rtf\"                       \"#{@installer_root}\"/Applications/Soundflower")
+cmd("cp \"#{@svn_root}/SoundflowerBed/Soundflowerbed README.rtf\"   \"#{@installer_root}\"/Applications/Soundflower")
 
 puts "  Building Package -- this could take a while..."
-#puts `sudo pkgbuild --root \"#{@installer_root}\" --identifier com.cycling74.soundflower --version #{@version} --install-location \"/\" \"#{@build_folder}/Soundflower.pkg\" --ownership preserve  --scripts \"#{@svn_root}/Installer/scripts\" --sign \"Developer ID Installer: Cycling '74\"`
-puts `sudo pkgbuild --root \"#{@installer_root}\" --identifier com.cycling74.soundflower --version #{@version} --install-location \"/\" \"#{@build_folder}/Soundflower.pkg\" --ownership preserve  --scripts \"#{@svn_root}/Installer/scripts\"` # don't sign it
+puts `pkgbuild --root \"#{@installer_root}\" --identifier com.cycling74.soundflower --version #{@version} --install-location "/" \"#{@build_folder}/Soundflower.pkg\" --ownership preserve  --scripts \"#{@svn_root}/Installer/scripts\" --sign \"Developer ID Installer: Cycling '74\"`
 
 puts "  Copying readme, license, etc...."
-cmd("sudo cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
-cmd("sudo cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
-cmd("sudo cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
 
 puts "  Creating Disk Image..."
-cmd("sudo rm -rfv \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
-cmd("sudo hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
+cmd("rm -rfv \"#{@svn_root}/Installer/Soundflower-#{@version}.dmg\"")
+cmd("hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
 
 puts "  All done!"
 
