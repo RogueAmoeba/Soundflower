@@ -15,9 +15,7 @@
 
 /* Begin PBXFileReference section */
 		222ADFEC1862531600C9BE56 /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		222ADFF01862531600C9BE56 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
 		222ADFFF1862541300C9BE56 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		222AE0001862541400C9BE56 /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
 		222AE0021862541400C9BE56 /* SoundflowerDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerDevice.cpp; sourceTree = "<group>"; };
 		222AE0031862541400C9BE56 /* SoundflowerDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundflowerDevice.h; sourceTree = "<group>"; };
 		222AE0041862541400C9BE56 /* SoundflowerEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerEngine.cpp; sourceTree = "<group>"; };
@@ -38,13 +36,11 @@
 		222ADFE11862531500C9BE56 = {
 			isa = PBXGroup;
 			children = (
-				222AE0001862541400C9BE56 /* Soundflower.xcconfig */,
 				222ADFFF1862541300C9BE56 /* Info.plist */,
 				222AE0021862541400C9BE56 /* SoundflowerDevice.cpp */,
 				222AE0031862541400C9BE56 /* SoundflowerDevice.h */,
 				222AE0041862541400C9BE56 /* SoundflowerEngine.cpp */,
 				222AE0051862541400C9BE56 /* SoundflowerEngine.h */,
-				222ADFF01862531600C9BE56 /* Kernel.framework */,
 				222ADFED1862531600C9BE56 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,11 +93,11 @@
 		222ADFE21862531600C9BE56 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Cycling '74";
 				TargetAttributes = {
 					222ADFEB1862531600C9BE56 = {
-						DevelopmentTeam = GBXXCFCVW5;
+						DevelopmentTeam = 3G47DU9NXM;
 					};
 				};
 			};
@@ -225,48 +221,55 @@
 		};
 		222ADFFD1862531600C9BE56 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 222AE0001862541400C9BE56 /* Soundflower.xcconfig */;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2.0b1;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(SRCROOT)/../Build/InstallerRoot";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"NUM_CHANS=$NUM_CHANS",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				INSTALL_PATH = /System/Library/Extensions;
+				INSTALL_PATH = /Library/Extensions;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				ONLY_ACTIVE_ARCH = NO;
+				MODULE_VERSION = 2.0b1;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Debug;
 		};
 		222ADFFE1862531600C9BE56 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 222AE0001862541400C9BE56 /* Soundflower.xcconfig */;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2.0b1;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(SRCROOT)/../Build/InstallerRoot";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = "NUM_CHANS=$NUM_CHANS";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				INSTALL_PATH = /System/Library/Extensions;
+				INSTALL_PATH = /Library/Extensions;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				ONLY_ACTIVE_ARCH = NO;
+				MODULE_VERSION = 2.0b1;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Release;
