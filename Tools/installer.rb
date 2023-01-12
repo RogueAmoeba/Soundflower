@@ -1,8 +1,9 @@
-#!/usr/bin/env ruby -wU
+#!/usr/bin/env ruby -wKU
 
 ###################################################################
 # make an installer for Soundflower
-# requires: you must have already performed a Deployment build
+# requires: you must have already performed a Deployment build and
+# thus have the kext installed to /System/Library/Extensions
 ###################################################################
 
 require 'open3'
@@ -16,6 +17,8 @@ libdir = "."
 Dir.chdir libdir        # change to libdir so that requires work
 
 @svn_root = ".."
+@version = "9.9.9"
+
 Dir.chdir @svn_root
 @svn_root = Dir.pwd
 
@@ -74,7 +77,7 @@ end
 def getversion()
   theVersion = "0.0.0"
 
-  f = File.open("#{@installer_root}/System/Library/Extensions/Soundflower.kext/Contents/Info.plist", "r")
+  f = File.open("/System/Library/Extensions/Soundflower.kext/Contents/Info.plist", "r")
   str = f.read
   theVersion = str.match(/<key>CFBundleShortVersionString<\/key>\n.*<string>(.*)<\/string>/).captures[0]
   f.close
@@ -88,32 +91,27 @@ end
 ###################################################################
 
 create_logs()
-
-@installer_root = "#{@svn_root}/Build/InstallerRoot"
 @version = getversion()
+
 @build_folder = "#{@svn_root}/Build/Soundflower-#{@version}"
 
 puts "  Creating installer directory structure..."
-cmd("sudo rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
-cmd("sudo mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
-
-cmd("sudo cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\"           \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/License.txt\"                                \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/Installer/ReadMe.rtf\"                       \"#{@installer_root}\"/Applications/Soundflower")
-cmd("sudo cp \"#{@svn_root}/SoundflowerBed/Soundflowerbed README.rtf\"   \"#{@installer_root}\"/Applications/Soundflower")
+cmd("rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
+cmd("mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
 
 puts "  Building Package -- this could take a while..."
-#puts `sudo pkgbuild --root \"#{@installer_root}\" --identifier com.cycling74.soundflower --version #{@version} --install-location \"/\" \"#{@build_folder}/Soundflower.pkg\" --ownership preserve  --scripts \"#{@svn_root}/Installer/scripts\" --sign \"Developer ID Installer: Cycling '74\"`
-puts `sudo pkgbuild --root \"#{@installer_root}\" --identifier com.cycling74.soundflower --version #{@version} --install-location \"/\" \"#{@build_folder}/Soundflower.pkg\" --ownership preserve  --scripts \"#{@svn_root}/Installer/scripts\"` # don't sign it
+cmd("rm -rfv \"#{@svn_root}/Installers/Soundflower.pkg\"")
+#cmd("/Developer/usr/bin/packagemaker --verbose --root \"#{@svn_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@svn_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@svn_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
+cmd("/Developer/usr/bin/packagemaker --verbose --doc \"#{@svn_root}/Installer/Soundflower.pmdoc\" --out \"#{@build_folder}/Soundflower.pkg\" ")
 
 puts "  Copying readme, license, etc...."
-cmd("sudo cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
-cmd("sudo cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
-cmd("sudo cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
 
 puts "  Creating Disk Image..."
-cmd("sudo rm -rfv \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
-cmd("sudo hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
+cmd("rm -rfv \"#{@svn_root}/Installer/Soundflower-#{@version}.dmg\"")
+cmd("hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
 
 puts "  All done!"
 
