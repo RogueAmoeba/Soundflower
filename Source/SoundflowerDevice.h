@@ -40,6 +40,8 @@
 #define SEPARATE_INPUT_BUFFERS_KEY		"SeparateInputBuffers"
 #define SoundflowerDevice				com_cycling74_driver_SoundflowerDevice
 
+#define NUM_CHANS 64
+
 class SoundflowerEngine;
 
 class SoundflowerDevice : public IOAudioDevice
